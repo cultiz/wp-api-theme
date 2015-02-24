@@ -5,6 +5,9 @@ require "class/router.php";
 
 //updateQueryPosts();
 $json = new JSON();
+$router = new ROUTER();
+
+print_r($router->get_routes());
 
 while ( have_posts() ) : the_post();
 	$post = new POST( $post );
