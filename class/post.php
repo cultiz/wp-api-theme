@@ -11,7 +11,9 @@ class POST {
 		$this->getHtml();
 		$this->getCustomFields();
 		$this->getMediaAttachments();
+	}
 
+	public function getPost() {
 		return $this->post;
 	}
 
