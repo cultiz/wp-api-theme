@@ -9,6 +9,7 @@ class POST {
 		if ($this->post->comment_status === "open") $this->post->comment_count = $this->get_comment_count($this->post->ID);
 		if (!is_author()) $this->post->post_author = $this->get_author($this->post->post_author);
 		if (!is_category()) $this->post->post_categories = $this->get_categories($this->post->ID);
+		if (!is_tag()) $this->post->post_tags = $this->get_tags($this->post->ID);
 		$this->post->post_html = $this->get_html($this->post->post_content);
 		$this->post->custom_fields = $this->get_custom_fields($this->post->ID);
 		$this->post->media_attachments = $this->get_media_attachments($this->post->ID);
@@ -16,6 +17,19 @@ class POST {
 
 	public function get_post() {
 		return $this->post;
+	}
+
+	private function get_tags($post_id) {
+		$tags_ids = wp_get_post_terms($post_id);
+		$tags = array();
+
+		foreach ($tags_ids as $id) {
+			$tag = get_tag($id);
+			$tag->tag_link = get_tag_link($id);
+			$tags[] = $tag;
+		}
+
+		return $tags;
 	}
 
 	private function get_comment_count($post_id) {

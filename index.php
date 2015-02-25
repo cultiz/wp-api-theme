@@ -23,7 +23,7 @@ if (is_404()) {
 
 	/*} elseif (is_tag()) {
 
-		$tag = get_tags()[0];
+		$tag = get_tags();
 		$json->tag = $tag;
 	*/
 	} elseif (is_search()) {
