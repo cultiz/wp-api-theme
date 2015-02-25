@@ -1,17 +1,13 @@
 <?php 
-require "class/json.php";
-require "class/post.php";
-require "class/router.php";
 
-//updateQueryPosts();
+//init_theme();
+update_wp_query();
+
 $json = new JSON();
-$router = new ROUTER();
-
-print_r($router->get_routes());
 
 while ( have_posts() ) : the_post();
 	$post = new POST( $post );
-	$json->posts[] = $post->getPost();
+	$json->data[] = $post->get_post();
 endwhile;
 
 header( 'Content-type: application/json' );

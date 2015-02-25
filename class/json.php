@@ -1,8 +1,8 @@
 <?php
 class JSON {
-	public $posts;
+	public $data;
 
 	public function __construct() {
-		$this->posts = array();
+		$this->data = array();
 	}
 }
