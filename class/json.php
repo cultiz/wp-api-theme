@@ -1,12 +1,8 @@
 <?php
 class JSON {
-	public $status_code;
-	public $message;
-	public $data;
-
+	
 	public function __construct() {
 		header( 'Content-type: application/json' );
-		$this->data = array();
 	}
 
 	public function set_status_code($code) {

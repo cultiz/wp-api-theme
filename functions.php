@@ -3,6 +3,16 @@ require "class/json.php";
 require "class/post.php";
 
 function update_wp_query() {
-	if ( empty( $_GET ) ) return;
-	query_posts( $_GET );
+	if (empty($_GET)) return;
+	query_posts($_GET);
+}
+
+function get_blog_info($requests) {
+	$blog_info = array();
+
+	foreach ($requests as $request) {
+		$blog_info[$request] = get_bloginfo($request);
+	}
+
+	return $blog_info;
 }
