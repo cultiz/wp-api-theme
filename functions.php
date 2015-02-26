@@ -1,6 +1,7 @@
 <?php
 require "class/json.php";
 require "class/post.php";
+require "class/cache.php";
 
 function update_wp_query() {
 	if (empty($_GET)) return;
