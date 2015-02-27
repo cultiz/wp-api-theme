@@ -2,10 +2,8 @@
 
 class CACHE {
 
-	public $query;
 	public $file;
 	public $json;
-	public $exists;
 	private $cache_dir;
 	private $expire;
 
@@ -13,35 +11,31 @@ class CACHE {
 		$this->cache_dir = get_template_directory() . '/cache/';
 		$this->expire = time() - 86400;
 
-		$this->query = 'test';
-		$this->file = $this->cache_dir . 'abcd.cache';
-		$this->exists = (file_exists($this->file) && filemtime($this->file) > $this->expire);
+		$this->file = $this->cache_dir . $this->get_file_name();
+	}
+
+	public function exists() {
+		return (file_exists($this->file) && filemtime($this->file) > $this->expire);
 	}
 
 	public function get() {
-		if ($this->exists) {
-			$this->json = $this->read();
-			return $this->json;
-		} else {
-			return false;
-		}
+	    $binary = gzfile($this->file); 
+		$this->json = implode($binary);
+		return $this->json;
 	}
 
 	public function set($json) {
 		$this->json = $json;
-		$file = fopen($this->file, 'w');
-
-		if ($file) {
-		    fwrite($file, $this->json); 
-			fclose($file); 
-		}
-	}
-
-	private function read() {
-        return file_get_contents($this->file);
+		$file = gzopen($this->file, 'w');
+	    gzwrite($file, $this->json); 
+		gzclose($file); 
 	}
 
 	private function flush($file) {
 
+	}
+
+	private function get_file_name() {
+		return md5($_SERVER[HTTP_HOST] . $_SERVER[REQUEST_URI]) . '.gz';
 	}
 }

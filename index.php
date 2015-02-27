@@ -9,9 +9,9 @@ $json = new JSON();
 // Create the Cache object
 $cache = new CACHE();
 
-$cached_json = $cache->get();
-if ($cached_json) {
+if ($cache->exists()) {
 	
+	$cached_json = $cache->get();
 	$json = json_decode($cached_json);
 
 } else {
