@@ -9,12 +9,7 @@ $json = new JSON();
 // Create the Cache object
 $cache = new CACHE();
 
-if ($cache->exists()) {
-	
-	$cached_json = $cache->get();
-	$json = json_decode($cached_json);
-
-} else {
+if (!$cache->exists()) {
 
 	if (is_404()) {
 
@@ -72,4 +67,5 @@ if ($cache->exists()) {
 	$cache->set(json_encode($json));
 }
 
-echo json_encode($json);
+//echo json_encode($json);
+echo $cache->get();

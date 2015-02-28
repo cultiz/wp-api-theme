@@ -3,7 +3,7 @@
 class CACHE {
 
 	public $file;
-	public $json;
+	public $binary;
 	private $cache_dir;
 	private $expire;
 
@@ -19,16 +19,21 @@ class CACHE {
 	}
 
 	public function get() {
-	    $binary = gzfile($this->file); 
-		$this->json = implode($binary);
-		return $this->json;
+	    //$binary = gzfile($this->file); 
+		//$this->json = implode($binary);
+		$this->binary = file_get_contents($this->file);
+		return $this->binary;
 	}
 
 	public function set($json) {
-		$this->json = $json;
-		$file = gzopen($this->file, 'w');
-	    gzwrite($file, $this->json); 
-		gzclose($file); 
+		//$this->json = $json;
+		//$file = gzopen($this->file, 'w');
+	    //gzwrite($file, $this->json); 
+		//gzclose($file); 
+		$this->binary = gzencode($json);
+		$file = fopen($this->file, 'w');
+	    fwrite($file, $this->binary); 
+		fclose($file); 
 	}
 
 	private function flush($file) {

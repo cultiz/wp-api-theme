@@ -3,6 +3,7 @@ class JSON {
 	
 	public function __construct() {
 		header( 'Content-type: application/json' );
+		header( 'Content-Encoding: gzip' );
 	}
 
 	public function set_status_code($code) {
