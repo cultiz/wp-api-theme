@@ -6,66 +6,57 @@ update_wp_query();
 // Create the JSON object
 $json = new JSON();
 
-// Create the Cache object
-$cache = new CACHE();
+if (is_404()) {
 
-if (!$cache->exists()) {
+	$json->set_status_code(404);
 
-	if (is_404()) {
+} else {
 
-		$json->set_status_code(404);
+	$json->set_status_code(200);
+	//$json->blog_info = get_blog_info(array('name', 'description', 'url', 'language'));
+
+	if (is_category()) {
+
+		$category = get_the_category()[0];
+		$category->category_link = get_category_link($category->term_id);
+		$json->category = $category;
+
+	/*} elseif (is_tag()) {
+
+		$tag = get_tags();
+		$json->tag = $tag;
+	*/
+	} elseif (is_search()) {
+		
+		$query = get_search_query();
+		$json->search_query = $query;
+
+	} elseif (is_author()) {
+		
+		$author = get_the_author();
+		$author = get_user_by('login', $author);
+		$author = $author->data;
+		unset($author->user_pass);
+		unset($author->user_activation_key);
+		$json->author = $author;
+
+	}
+
+	if (is_single() || is_page()) {
+
+		$post = new POST(get_post());
+		$json->post = $post->get_post();
 
 	} else {
 
-		$json->set_status_code(200);
-		//$json->blog_info = get_blog_info(array('name', 'description', 'url', 'language'));
+		$json->posts = array();
+		
+		while (have_posts()) : the_post();
+			$post = new POST($post);
+			$json->posts[] = $post->get_post();
+		endwhile;
 
-		if (is_category()) {
-
-			$category = get_the_category()[0];
-			$category->category_link = get_category_link($category->term_id);
-			$json->category = $category;
-
-		/*} elseif (is_tag()) {
-
-			$tag = get_tags();
-			$json->tag = $tag;
-		*/
-		} elseif (is_search()) {
-			
-			$query = get_search_query();
-			$json->search_query = $query;
-
-		} elseif (is_author()) {
-			
-			$author = get_the_author();
-			$author = get_user_by('login', $author);
-			$author = $author->data;
-			unset($author->user_pass);
-			unset($author->user_activation_key);
-			$json->author = $author;
-
-		}
-
-		if (is_single() || is_page()) {
-
-			$post = new POST(get_post());
-			$json->post = $post->get_post();
-
-		} else {
-
-			$json->posts = array();
-			
-			while (have_posts()) : the_post();
-				$post = new POST($post);
-				$json->posts[] = $post->get_post();
-			endwhile;
-
-		}
 	}
-	
-	$cache->set(json_encode($json));
 }
 
-//echo json_encode($json);
-echo $cache->get();
+echo json_encode($json);

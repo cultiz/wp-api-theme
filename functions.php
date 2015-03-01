@@ -1,7 +1,7 @@
 <?php
-require "class/json.php";
-require "class/post.php";
-require "class/cache.php";
+require "lib/json.php";
+require "lib/post.php";
+//require "lib/cache.php";
 
 function update_wp_query() {
 	if (empty($_GET)) return;
