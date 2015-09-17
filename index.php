@@ -1,5 +1,10 @@
 <?php 
 
+header("Access-Control-Allow-Methods: GET");
+if (isset($_SERVER['HTTP_ORIGIN'])) {
+    header("Access-Control-Allow-Origin: http://cultiz.com/, http://beta.cultiz.com/, http://localhost:8888/");
+}
+
 // Update query using $_GET params
 update_wp_query();
 
